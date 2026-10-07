@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Passport Application</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Passport Automation System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="center-box">
+
+        <h1>Passport Application</h1>
+
+
+        <form>
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                placeholder="Enter full name"
+            >
+
+
+            <label>Date of Birth</label>
+
+            <input
+                type="date"
+            >
+
+
+            <label>Phone Number</label>
+
+            <input
+                type="tel"
+                placeholder="Enter phone number"
+            >
+
+
+            <label>Address</label>
+
+            <textarea
+                placeholder="Enter your address">
+            </textarea>
+
+
+            <label>Passport Type</label>
+
+            <select>
+
+                <option>Fresh Passport</option>
+
+                <option>Passport Renewal</option>
+
+            </select>
+
+
+            <button type="submit" class="btn">
+                Submit Application
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
