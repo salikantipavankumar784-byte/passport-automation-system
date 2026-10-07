@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Track Application</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Passport Automation System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/application">
+                Apply Passport
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="center-box">
+
+        <h1>Track Application</h1>
+
+        <form method="POST" action="/track">
+
+            <label>
+                Application ID
+            </label>
+
+            <input
+                type="number"
+                name="application_id"
+                placeholder="Enter Application ID"
+                required
+            >
+
+            <button type="submit" class="btn">
+                Track Application
+            </button>
+
+        </form>
+
+
+        {% if application %}
+
+        <hr>
+
+        <h2>Application Details</h2>
+
+        <p>
+            <strong>Application ID:</strong>
+            {{ application["id"] }}
+        </p>
+
+        <p>
+            <strong>Name:</strong>
+            {{ application["full_name"] }}
+        </p>
+
+        <p>
+            <strong>Date of Birth:</strong>
+            {{ application["date_of_birth"] }}
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            {{ application["phone"] }}
+        </p>
+
+        <p>
+            <strong>Passport Type:</strong>
+            {{ application["passport_type"] }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ application["status"] }}
+        </p>
+
+        {% elif request.method == "POST" %}
+
+        <hr>
+
+        <p>
+            Application not found.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

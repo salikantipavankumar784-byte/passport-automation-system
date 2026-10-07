@@ -14,10 +14,12 @@ def get_db_connection():
     return conn
 
 
-# Create database table
+# Create database tables
 def init_db():
+
     conn = get_db_connection()
 
+    # Users table
     conn.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,17 +29,32 @@ def init_db():
         )
     """)
 
+    # Applications table
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS applications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            full_name TEXT NOT NULL,
+            date_of_birth TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            address TEXT NOT NULL,
+            passport_type TEXT NOT NULL,
+            status TEXT DEFAULT 'Submitted',
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    """)
+
     conn.commit()
     conn.close()
 
 
-# Home page
+# Home
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# Register page
+# Register
 @app.route("/register", methods=["GET", "POST"])
 def register():
 
@@ -47,7 +64,6 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
 
-        # Encrypt password
         hashed_password = generate_password_hash(password)
 
         conn = get_db_connection()
@@ -55,7 +71,11 @@ def register():
         try:
 
             conn.execute(
-                "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+                """
+                INSERT INTO users
+                (name, email, password)
+                VALUES (?, ?, ?)
+                """,
                 (name, email, hashed_password)
             )
 
@@ -73,7 +93,7 @@ def register():
     return render_template("register.html")
 
 
-# Login page
+# Login
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -91,7 +111,10 @@ def login():
 
         conn.close()
 
-        if user and check_password_hash(user["password"], password):
+        if user and check_password_hash(
+            user["password"],
+            password
+        ):
 
             session["user_id"] = user["id"]
             session["user_name"] = user["name"]
@@ -117,13 +140,90 @@ def dashboard():
 
 
 # Passport application
-@app.route("/application")
+@app.route("/application", methods=["GET", "POST"])
 def application():
 
     if "user_id" not in session:
         return redirect(url_for("login"))
 
+    if request.method == "POST":
+
+        full_name = request.form["full_name"]
+        date_of_birth = request.form["date_of_birth"]
+        phone = request.form["phone"]
+        address = request.form["address"]
+        passport_type = request.form["passport_type"]
+
+        conn = get_db_connection()
+
+        cursor = conn.execute(
+            """
+            INSERT INTO applications
+            (
+                user_id,
+                full_name,
+                date_of_birth,
+                phone,
+                address,
+                passport_type
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                session["user_id"],
+                full_name,
+                date_of_birth,
+                phone,
+                address,
+                passport_type
+            )
+        )
+
+        conn.commit()
+
+        application_id = cursor.lastrowid
+
+        conn.close()
+
+        return render_template(
+            "application_success.html",
+            application_id=application_id
+        )
+
     return render_template("application.html")
+
+
+# Application tracking
+@app.route("/track", methods=["GET", "POST"])
+def track():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    application = None
+
+    if request.method == "POST":
+
+        application_id = request.form["application_id"]
+
+        conn = get_db_connection()
+
+        application = conn.execute(
+            """
+            SELECT *
+            FROM applications
+            WHERE id = ?
+            AND user_id = ?
+            """,
+            (application_id, session["user_id"])
+        ).fetchone()
+
+        conn.close()
+
+    return render_template(
+        "track.html",
+        application=application
+    )
 
 
 # Logout
@@ -136,5 +236,7 @@ def logout():
 
 
 if __name__ == "__main__":
+
     init_db()
+
     app.run(debug=True)

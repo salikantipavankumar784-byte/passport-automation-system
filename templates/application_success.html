@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Application Submitted</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Passport Automation System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="center-box">
+
+        <h1>Application Submitted!</h1>
+
+        <p>
+            Your passport application has been
+            successfully submitted.
+        </p>
+
+        <br>
+
+        <h2>
+            Application ID: {{ application_id }}
+        </h2>
+
+        <br>
+
+        <p>
+            Please save your Application ID
+            for tracking.
+        </p>
+
+        <br>
+
+        <a href="/dashboard" class="btn">
+            Go to Dashboard
+        </a>
+
+    </div>
+
+</body>
+
+</html>
