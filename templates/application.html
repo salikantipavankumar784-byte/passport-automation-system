@@ -1,104 +1,72 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passport Application</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
-
 </head>
 
 <body>
 
     <nav class="navbar">
-
         <div class="logo">
             Passport Automation System
         </div>
 
         <div class="nav-links">
-
-            <a href="/dashboard">
-                Dashboard
-            </a>
-
-            <a href="/logout">
-                Logout
-            </a>
-
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
         </div>
-
     </nav>
-
 
     <div class="center-box">
 
         <h1>Passport Application</h1>
 
-        <form method="POST" action="/application">
+        <form method="POST"
+              action="/application"
+              enctype="multipart/form-data">
 
             <label>Full Name</label>
-
-            <input
-                type="text"
-                name="full_name"
-                placeholder="Enter your full name"
-                required
-            >
-
+            <input type="text"
+                   name="full_name"
+                   placeholder="Enter your full name"
+                   required>
 
             <label>Date of Birth</label>
-
-            <input
-                type="date"
-                name="date_of_birth"
-                required
-            >
-
+            <input type="date"
+                   name="date_of_birth"
+                   required>
 
             <label>Phone Number</label>
-
-            <input
-                type="tel"
-                name="phone"
-                placeholder="Enter phone number"
-                required
-            >
-
+            <input type="tel"
+                   name="phone"
+                   placeholder="Enter phone number"
+                   required>
 
             <label>Address</label>
-
-            <textarea
-                name="address"
-                placeholder="Enter your complete address"
-                required></textarea>
-
+            <textarea name="address"
+                      placeholder="Enter your complete address"
+                      required></textarea>
 
             <label>Passport Type</label>
-
             <select name="passport_type" required>
-
-                <option value="">
-                    Select passport type
-                </option>
-
-                <option value="Fresh Passport">
-                    Fresh Passport
-                </option>
-
-                <option value="Passport Renewal">
-                    Passport Renewal
-                </option>
-
+                <option value="">Select passport type</option>
+                <option value="Fresh Passport">Fresh Passport</option>
+                <option value="Passport Renewal">Passport Renewal</option>
             </select>
 
+            <div class="form-group">
+                <label>Upload Document</label>
+                <input type="file"
+                       name="document"
+                       required>
+            </div>
 
             <button type="submit" class="btn">
                 Submit Application
@@ -109,5 +77,4 @@
     </div>
 
 </body>
-
 </html>

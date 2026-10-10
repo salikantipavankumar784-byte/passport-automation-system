@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+
+<body>
+
+```
+<nav class="navbar">
+
+    <div class="logo">
+        Passport Automation System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+     <a href="/admin-logout">
+    Admin Logout
+</a>
+
+    </div>
+
+</nav>
+
+
+<div class="dashboard">
+
+    <h1>Admin Dashboard</h1>
+    <p>Manage passport applications</p>
+
+
+<!-- Application Statistics -->
+<div class="cards">
+
+    <div class="card">
+        <h3>📋 Total Applications</h3>
+        <h2>{{ total }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>✅ Approved</h3>
+        <h2>{{ approved }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>⏳ Under Review</h3>
+        <h2>{{ under_review }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>❌ Rejected</h3>
+        <h2>{{ rejected }}</h2>
+    </div>
+
+
+</div>
+
+<!-- Application Status Pie Chart -->
+<div class="card">
+    <h2>📊 Application Status Overview</h2>
+    <div style="max-width: 450px; margin: auto;">
+        <canvas id="statusPieChart"></canvas>
+    </div>
+</div>
+
+<!-- Admin Management Options -->
+<h2>Manage System</h2>
+<a href="/admin/download-report" class="btn">
+    📄 Download PDF Report
+</a>
+
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>Registered Users</h2>
+            <p>View users registered in the system.</p>
+            <a href="/admin/users" class="btn">View Users</a>
+        </div>
+
+        <div class="card">
+            <h2>Applications</h2>
+            <p>View and manage passport applications.</p>
+            <a href="/admin/applications" class="btn">
+                View Applications
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>Application Status</h2>
+            <p>Update passport application status.</p>
+            <a href="/admin/applications" class="btn">
+                Update Status
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const statusLabels = {{ status_labels | tojson }};
+const statusValues = {{ status_values | tojson }};
+
+const chartCanvas = document.getElementById("statusPieChart");
+
+new Chart(chartCanvas, {
+    type: "pie",
+    data: {
+        labels: statusLabels,
+        datasets: [{
+            data: statusValues,
+            backgroundColor: [
+                "#2563eb",
+                "#f59e0b",
+                "#16a34a",
+                "#dc2626",
+                "#8b5cf6"
+            ],
+            borderWidth: 2,
+            borderColor: "#ffffff"
+        }]
+    },
+    
+options: {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: "bottom"
+        },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    const value = context.raw;
+                    const total = context.dataset.data.reduce(
+                        (sum, number) => sum + number, 0
+                    );
+
+                    const percentage = total === 0
+                        ? 0
+                        : ((value / total) * 100).toFixed(1);
+
+                    return context.label + ": " + value +
+                           " (" + percentage + "%)";
+                }
+            }
+        }
+    }
+}
+
+});
+</script>
+</body>
+
+
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+
+<body>
+
+```
+<nav class="navbar">
+
+    <div class="logo">
+        Passport Automation System
+    </div>
+
+</nav>
+
+<div class="center-box">
+
+    <h1>Admin Login</h1>
+
+    <form method="POST" action="/admin-login">
+
+        <label>Admin Username</label>
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter admin username"
+            required
+        >
+
+        <label>Admin Password</label>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter admin password"
+            required
+        >
+
+        <button type="submit" class="btn">
+            Admin Login
+        </button>
+
+    </form>
+
+</div>
+```
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Registered Users</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+
+<body>
+
+```
+<nav class="navbar">
+
+    <div class="logo">
+        Passport Automation System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/admin">
+            Admin Panel
+        </a>
+
+        <a href="/admin-logout">
+    Admin Logout
+</a>
+
+    </div>
+
+</nav>
+
+
+<div class="dashboard">
+
+    <h1>Registered Users</h1>
+
+    <p>Users registered in the system</p>
+
+
+    <div class="cards">
+
+        {% for user in users %}
+
+        <div class="card">
+
+            <h2>User ID: {{ user["id"] }}</h2>
+
+            <p>
+                <strong>Name:</strong>
+                {{ user["name"] }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ user["email"] }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <p>No registered users found.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+```
+
+</body>
+
+</html>

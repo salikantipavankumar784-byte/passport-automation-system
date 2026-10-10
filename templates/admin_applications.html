@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Applications</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+
+<body>
+
+```
+<nav class="navbar">
+
+    <div class="logo">
+        Passport Automation System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/admin">
+            Admin Panel
+        </a>
+
+        <a href="/admin-logout">
+    Admin Logout
+</a>
+
+    </div>
+
+</nav>
+
+
+<div class="dashboard">
+
+    
+<h1>Passport Applications</h1>
+
+<p>All submitted applications</p>
+
+<div class="card">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by ID, name, phone, or passport type..."
+        oninput="searchApplications()"
+    >
+</div>
+
+    {% if applications %}
+
+    <div class="cards">
+
+        {% for application in applications %}
+
+        <div class="card">
+
+            <h2>
+                Application ID: {{ application["id"] }}
+            </h2>
+
+            <p>
+                <strong>Name:</strong>
+                {{ application["full_name"] }}
+            </p>
+
+            <p>
+                <strong>Date of Birth:</strong>
+                {{ application["date_of_birth"] }}
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                {{ application["phone"] }}
+            </p>
+
+            <p>
+                <strong>Address:</strong>
+                {{ application["address"] }}
+            </p>
+
+            <p>
+                <strong>Passport Type:</strong>
+                {{ application["passport_type"] }}
+            </p>
+            <form method="POST"
+      action="/admin/update-status/{{ application['id'] }}">
+
+    <select name="status" required>
+
+        <option value="Submitted">
+            Submitted
+        </option>
+
+        <option value="Under Review">
+            Under Review
+        </option>
+
+        <option value="Approved">
+            Approved
+        </option>
+
+        <option value="Rejected">
+            Rejected
+        </option>
+
+        <option value="Dispatched">
+            Dispatched
+        </option>
+
+    </select>
+
+    <button type="submit" class="btn">
+        Update Status
+    </button>
+
+</form>
+
+            
+<p>
+    <strong>Status:</strong>
+    <span class="status-badge status-{{ application['status']|lower|replace(' ', '-') }}">
+        {{ application["status"] }}
+    </span>
+</p>
+
+            <p>
+    <strong>Document:</strong>
+
+    {% set document = documents.get(application["id"]) %}
+
+    {% if document %}
+        <a href="{{ url_for('uploaded_file', filename=document) }}" target="_blank">
+            View Document
+        </a>
+    {% else %}
+        No document uploaded
+    {% endif %}
+</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <p>
+        No applications found.
+    </p>
+
+    {% endif %}
+
+</div>
+```
+
+<script>
+function searchApplications() {
+    const input = document.getElementById("searchInput");
+    const searchText = input.value.toLowerCase().trim();
+
+    const cards = document.querySelectorAll(".cards .card");
+
+    cards.forEach(function(card) {
+        const cardText = card.innerText.toLowerCase();
+
+        if (cardText.includes(searchText)) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+
+</html>
